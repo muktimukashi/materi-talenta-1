@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kelas Python & Pygame — Interaktif ala Figma</title>
+<style>
+  :root{
+    --bg:#e9eef5; --card:#edf2fa; --text:#1f2937; --muted:#5b6b7a;
+    --accent:#3b82f6; --accent2:#06b6d4; --ok:#16a34a;
+    --radius:22px; --shadowL:rgba(255,255,255,0.9); --shadowD:rgba(0,0,0,0.12);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
+    background: radial-gradient(1200px 800px at 20% -10%, #f7fbff, var(--bg)) fixed;}
+  header{text-align:center;padding:40px 20px 16px}
+  h1{margin:0;font-size:clamp(22px,3.8vw,36px)}
+  header p{max-width:900px;margin:10px auto 0;color:var(--muted)}
+  .grid{display:flex;flex-direction:column;gap:22px;max-width:1000px;margin:0 auto 80px;padding:0 20px}
+  .card{background:var(--card);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;
+    box-shadow:12px 12px 28px var(--shadowD), -12px -12px 28px var(--shadowL);transition:transform .2s}
+  .card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), inset 0 0 34px rgba(59,130,246,.06)}
+  .card:hover{transform:translateY(-3px)}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:12px;color:#fff;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 10px;border-radius:999px}
+  h2{margin:12px 0 6px;font-size:20px}
+  .muted{color:var(--muted)}
+  .code{width:100%;min-height:170px;background:#0b1020;color:#d1e8ff;border:0;border-radius:16px;padding:12px;
+    font:13px ui-monospace,Menlo,Consolas,monospace;box-shadow:inset 10px 10px 24px rgba(0,0,0,.35),
+    inset -6px -6px 18px rgba(255,255,255,.05);resize:vertical}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .btn{border:0;cursor:pointer;padding:10px 14px;border-radius:12px;font-weight:700;color:var(--text);
+    background:var(--card);box-shadow:6px 6px 14px var(--shadowD), -6px -6px 14px var(--shadowL);transition:transform .2s}
+  .btn.primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+  .btn:hover{transform:scale(1.05)}
+  .out{white-space:pre-wrap;background:#04101a;color:#baf7c1;border-radius:12px;padding:10px;font:13px ui-monospace,monospace;margin-top:10px}
+  .stage{margin-top:12px;background:#fff;border-radius:16px;overflow:hidden;height:260px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  .stage canvas{display:block;width:100%;height:260px;background:#f8fafc}
+  .hint{font-size:12px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Python & Pygame — Web Interaktif</h1>
+    <p>10 materi bergaya Figma. Kode Python ditampilkan rapi (copy-ready), tombol <b>Run Demo</b> menampilkan
+      <i>output simulasi</i> untuk Python dasar, dan <i>kanvas interaktif</i> untuk konsep Pygame (window, sprite, animasi, kontrol, collision, skor).</p>
+  </header>
+
+  <main class="grid" id="grid"><!-- cards injected --></main>
+
+<script>
+/** =========================
+ * DATA MATERI (10 topik)
+ * Untuk keamanan Live Server, code disimpan dalam data-code (escaped) lalu didecode saat render.
+ ========================== */
+const materi = [
+  {
+    id:'m1', badge:'Dasar', title:'Pengenalan Python & Input-Output',
+    desc:'Sintaks dasar, print(), input()',
+    code: `# Program Salam
+nama = input("Siapa namamu? ")
+print("Halo,", nama, "selamat belajar Python!")`,
+    demo: () => `Siapa namamu? Budi
+Halo, Budi selamat belajar Python!`
+  },
+  {
+    id:'m2', badge:'Dasar', title:'Variabel & Tipe Data + Casting',
+    desc:'str, int, float, bool dan konversi tipe.',
+    code: `# Variabel & tipe
+nama = "Siti"
+umur = 14
+tinggi = 1.58
+is_student = True
+
+print(type(nama), type(umur), type(tinggi), type(is_student))
+# Casting
+umur_str = str(umur)
+print("Umur sebagai teks:", umur_str)`,
+    demo: () => `<class 'str'> <class 'int'> <class 'float'> <class 'bool'>
+Umur sebagai teks: 14`
+  },
+  {
+    id:'m3', badge:'Dasar', title:'Operator: Aritmatika, Perbandingan, Logika',
+    desc:'+, -, *, /, //, %, **, ==, !=, >, <, and, or, not',
+    code: `a, b = 7, 3
+print("Tambah:", a+b, "Kali:", a*b, "Mod:", a%b)
+print("Banding:", a>b, a==b)
+x, y = True, False
+print("Logika:", x and y, x or y, not x)`,
+    demo: () => `Tambah: 10 Kali: 21 Mod: 1
+Banding: True False
+Logika: False True False`
+  },
+  {
+    id:'m4', badge:'Kontrol', title:'Kondisi: if / elif / else',
+    desc:'Pengambilan keputusan.',
+    code: `nilai = 82
+if nilai >= 90:
+    grade = "A"
+elif nilai >= 80:
+    grade = "B"
+else:
+    grade = "C"
+print("Grade:", grade)`,
+    demo: () => `Grade: B`
+  },
+  {
+    id:'m5', badge:'Kontrol', title:'Loop: for, while, break, continue',
+    desc:'Ulangan dan kontrol alur.',
+    code: `# For 1..5
+for i in range(1,6):
+    if i == 3: 
+        continue
+    print(i)
+# While countdown
+n = 5
+while n > 0:
+    print("Tersisa:", n)
+    if n == 2:
+        break
+    n -= 1`,
+    demo: () => `1
+2
+4
+5
+Tersisa: 5
+Tersisa: 4
+Tersisa: 3`
+  },
+  {
+    id:'m6', badge:'Struktur Data', title:'List, Loop di List, Fungsi (def)',
+    desc:'Operasi list & fungsi sederhana.',
+    code: `angka = [80, 90, 75]
+def rata(data):
+    return sum(data) / len(data)
+print("Nilai:", angka)
+print("Rata:", rata(angka))`,
+    demo: () => `Nilai: [80, 90, 75]
+Rata: 81.6666666667`.replace(/\./,'.') // display only; keep as is
+  },
+  // PYGAME ZONE (SIMULASI)
+  {
+    id:'m7', badge:'Pygame', title:'Instalasi, Window, Event Loop',
+    desc:'Konsep: inisialisasi, window, loop, quit event (disimulasikan).',
+    code: `# Pygame: window & event loop (konsep)
+import pygame
+pygame.init()
+win = pygame.display.set_mode((640, 360))
+pygame.display.set_caption("My Game")
+
+running = True
+while running:
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            running = False
+    win.fill((240, 248, 255))
+    pygame.display.flip()
+pygame.quit()`,
+    canvas: 'window'
+  },
+  {
+    id:'m8', badge:'Pygame', title:'Gambar & Sprite',
+    desc:'load image, blit ke layar (disimulasikan).',
+    code: `# Muat gambar dan tampilkan
+img = pygame.image.load("player.png")
+win.blit(img, (x, y))
+pygame.display.flip()`,
+    canvas: 'sprite'
+  },
+  {
+    id:'m9', badge:'Pygame', title:'Animasi & Gerakan',
+    desc:'Update posisi tiap frame (disimulasikan).',
+    code: `# Gerakkan sprite ke kanan
+x = 0
+vel = 5
+while running:
+    x += vel
+    win.blit(img, (x, y))
+    pygame.display.flip()`,
+    canvas: 'move'
+  },
+  {
+    id:'m10', badge:'Pygame', title:'Interaksi, Collision, Skor',
+    desc:'Kontrol panah, tabrakan objek, tambah skor (disimulasikan).',
+    code: `# Arrow key control & collision
+if keys[pygame.K_LEFT]: x -= 5
+if player_rect.colliderect(apple_rect):
+    score += 1  # tabrakan = tambah skor`,
+    canvas: 'game'
+  }
+];
+
+/** =========================
+ * RENDER KARTU
+ ========================== */
+const grid = document.getElementById('grid');
+
+function makeCard(m) {
+  const article = document.createElement('article');
+  article.className = 'card';
+  article.id = m.id;
+
+  const codeEsc = m.code
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+
+  article.innerHTML = `
+    <span class="badge">${m.badge}</span>
+    <h2>${m.title}</h2>
+    <p class="muted">${m.desc}</p>
+    <textarea class="code" data-default="${codeEsc}">${codeEsc}</textarea>
+    <div class="toolbar">
+      <button class="btn primary" data-action="run" data-id="${m.id}">Run Demo</button>
+      <button class="btn" data-action="reset" data-id="${m.id}">Reset</button>
+      <button class="btn" data-action="copy" data-id="${m.id}">Copy</button>
+    </div>
+    ${m.canvas ? `<div class="stage"><canvas></canvas></div><div class="hint">Hint: gunakan tombol panah pada materi kontrol/kolisi.</div>` : `<div class="out" id="${m.id}-out"></div>`}
+  `;
+  grid.appendChild(article);
+}
+
+materi.forEach(makeCard);
+
+/** =========================
+ * DEMO PYTHON (OUTPUT SIMULASI)
+ ========================== */
+function runTextDemo(id) {
+  const m = materi.find(x=>x.id===id);
+  const el = document.getElementById(`${id}-out`);
+  el.textContent = (typeof m.demo === 'function') ? m.demo() : 'Tidak ada output demo.';
+}
+function resetTextDemo(id) {
+  const area = document.querySelector(`#${id} .code`);
+  area.value = area.dataset.default;
+  const out = document.getElementById(`${id}-out`);
+  out && (out.textContent = '');
+}
+
+/** =========================
+ * SIMULASI PYGAME via Canvas
+ ========================== */
+const runners = {}; // per-card animation controller
+
+function runCanvas(id) {
+  const card = document.getElementById(id);
+  const canvas = card.querySelector('canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  // fix DPR crisp
+  const w = card.clientWidth - 36;
+  const h = 260;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.floor(w * dpr);
+  canvas.height = Math.floor(h * dpr);
+  canvas.style.width = Math.floor(w) + 'px';
+  canvas.style.height = h + 'px';
+  ctx.scale(dpr, dpr);
+
+  const mode = materi.find(x=>x.id===id).canvas;
+
+  // stop previous loop if any
+  cancelAnimationFrame(runners[id]?.raf || 0);
+
+  // common
+  let t0 = performance.now();
+  let player = {x: 40, y: 160, w: 36, h: 36, vx: 0, vy: 0};
+  let apple = {x: 260, y: 60, w: 24, h: 24, vy: 1.2};
+  let score = 0;
+  const keys = {};
+
+  function rect(r, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+    ctx.fillStyle = '#111';
+    ctx.fillRect(r.x+2, r.y+2, r.w-4, r.h-4);
+  }
+  function drawText(s, x, y){ ctx.fillStyle='#334155'; ctx.font='bold 14px Inter'; ctx.fillText(s,x,y); }
+
+  // events for control
+  function onKey(e){ keys[e.key] = (e.type==='keydown'); }
+  window.addEventListener('keydown', onKey);
+  window.addEventListener('keyup', onKey);
+
+  function loop(now){
+    const dt = Math.min(32, now - t0)/16.7; // ~60fps delta
+    t0 = now;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0,0,w,h);
+
+    if (mode === 'window') {
+      // static window + fps text
+      drawText('Simulasi Window + Event Loop (ESC=keluar di Pygame asli)', 10, 20);
+      rect({x:20,y:40,w:w-40,h:h-70}, '#93c5fd');
+    }
+
+    if (mode === 'sprite') {
+      drawText('Sprite (kotak) diblitt ke layar', 10, 20);
+      rect(player, '#60a5fa');
+    }
+
+    if (mode === 'move') {
+      drawText('Animasi: gerak ke kanan otomatis', 10, 20);
+      player.x += 2*dt;
+      if (player.x > w-40) player.x = 20;
+      rect(player, '#60a5fa');
+    }
+
+    if (mode === 'game') {
+      // control
+      if (keys['ArrowLeft'])  player.x -= 3*dt;
+      if (keys['ArrowRight']) player.x += 3*dt;
+      if (keys['ArrowUp'])    player.y -= 3*dt;
+      if (keys['ArrowDown'])  player.y += 3*dt;
+      player.x = Math.max(20, Math.min(w-56, player.x));
+      player.y = Math.max(40, Math.min(h-56, player.y));
+
+      // apple fall
+      apple.y += apple.vy*dt*3;
+      if (apple.y > h-40) { apple.y = 40; apple.x = 60 + Math.random()*(w-120); }
+
+      // draw
+      drawText('Panah untuk bergerak • Tabrak apel untuk +1', 10, 20);
+      rect(player, '#60a5fa'); // player
+      ctx.fillStyle='#ef4444'; ctx.beginPath();
+      ctx.arc(apple.x, apple.y, apple.w/2, 0, Math.PI*2); ctx.fill();
+
+      // collision AABB ~ circle
+      const pr = {x:player.x,y:player.y,w:player.w,h:player.h};
+      const dx = Math.max(pr.x, Math.min(apple.x, pr.x+pr.w)) - apple.x;
+      const dy = Math.max(pr.y, Math.min(apple.y, pr.y+pr.h)) - apple.y;
+      if (dx*dx + dy*dy < (apple.w/2)*(apple.w/2)) {
+        score++;
+        apple.y = 40; apple.x = 60 + Math.random()*(w-120);
+      }
+      drawText('Skor: '+score, w-100, 20);
+    }
+
+    runners[id].raf = requestAnimationFrame(loop);
+  }
+
+  runners[id] = { raf: requestAnimationFrame(loop), stop(){
+    cancelAnimationFrame(this.raf);
+    window.removeEventListener('keydown', onKey);
+    window.removeEventListener('keyup', onKey);
+  }};
+}
+
+function resetCanvas(id){
+  if (runners[id]) { runners[id].stop(); }
+  const card = document.getElementById(id);
+  const canvas = card.querySelector('canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  const area = card.querySelector('.code');
+  area.value = area.dataset.default;
+}
+
+/** =========================
+ * HANDLERS (Run/Reset/Copy)
+ ========================== */
+grid.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button.btn');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.action;
+  const isCanvas = !!materi.find(x=>x.id===id)?.canvas;
+
+  if (act==='run'){
+    if (isCanvas) runCanvas(id);
+    else runTextDemo(id);
+  }
+  if (act==='reset'){
+    if (isCanvas) resetCanvas(id);
+    else resetTextDemo(id);
+  }
+  if (act==='copy'){
+    const area = document.querySelector(`#${id} .code`);
+    navigator.clipboard.writeText(area.value);
+    const old = btn.textContent; btn.textContent='✓ Disalin'; setTimeout(()=>btn.textContent=old, 1200);
+  }
+});
+</script>
+</body>
+</html>

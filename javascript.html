@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelas JavaScript – Neumorphism Glow</title>
+  <style>
+    /* ====== THEME: Neumorphism Glow ====== */
+    :root{
+      --bg:#e9eef5;            /* soft gray-blue */
+      --card:#edf2fa;          /* lighter card */
+      --text:#1f2937;          /* slate-800 */
+      --muted:#5b6b7a;         /* slate-500 */
+      --accent:#7c3aed;        /* violet-600 */
+      --accent-2:#06b6d4;      /* cyan-500 */
+      --success:#16a34a;       /* green-600 */
+      --shadow-light: rgba(255,255,255,0.9);
+      --shadow-dark: rgba(0,0,0,0.12);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:"Inter",system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--text);
+      background: radial-gradient(1200px 800px at 20% 0%, #f7fbff, var(--bg)) fixed;
+    }
+    header{
+      padding:32px 20px 10px; text-align:center;
+    }
+    h1{margin:0; font-size:clamp(24px,4vw,38px); letter-spacing:0.2px}
+    header p{margin:8px auto 0; max-width:780px; color:var(--muted)}
+
+    .grid{
+      display:grid; gap:22px; padding:22px; max-width:1100px; margin:0 auto 80px;
+      grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    }
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 12px 12px 28px var(--shadow-dark), -12px -12px 28px var(--shadow-light);
+      padding:18px 18px 16px; position:relative; overflow:hidden;
+    }
+    .card::after{ /* subtle glow border */
+      content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35), inset 0 0 34px rgba(124,58,237,0.06);
+    }
+    .badge{display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:12px; color:#fff;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2)); padding:6px 10px; border-radius:999px;
+      box-shadow: 6px 6px 16px var(--shadow-dark), -3px -3px 10px var(--shadow-light);
+    }
+    .title{margin:12px 0 6px; font-weight:800; font-size:18px}
+    .desc{margin:0 0 10px; color:var(--muted); font-size:14px}
+
+    .code, textarea.code{width:100%; background:#0b1020; color:#d1e8ff; border:0; border-radius:16px;
+      padding:12px 12px; font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px;
+      box-shadow: inset 10px 10px 24px rgba(0,0,0,0.35), inset -6px -6px 18px rgba(255,255,255,0.05);
+    }
+    .toolbar{display:flex; gap:10px; margin:10px 0 0; flex-wrap:wrap}
+    .btn{border:0; cursor:pointer; padding:9px 14px; border-radius:12px; font-weight:600; color:var(--text);
+      background: var(--card); box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+    }
+    .btn:active{translate:0 1px}
+    .btn.primary{color:#fff; background: linear-gradient(135deg,var(--accent),var(--accent-2));}
+
+    .out{white-space:pre-wrap; background:#04101a; color:#baf7c1; border-radius:14px; padding:10px; font:13px ui-monospace,monospace; min-height:40px; margin-top:10px;
+      box-shadow: inset 10px 10px 24px rgba(0,0,0,0.5), inset -6px -6px 18px rgba(255,255,255,0.04);
+    }
+    .mini{font-size:12px; color:var(--muted); margin-top:10px}
+
+    .footer{
+      text-align:center; color:var(--muted); padding:20px; margin-bottom:40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔥 Belajar JavaScript – Neumorphism Glow</h1>
+    <p>Setiap materi berisi penjelasan singkat, demo interaktif, dan kode HTML + CSS + JS yang bisa kamu salin. Output bergaya <strong>console</strong> agar fokus ke logika.</p>
+  </header>
+
+  <main class="grid" id="cards">
+    <!-- Cards injected by JS below -->
+  </main>
+
+  <div class="footer">© 2025 – Mini course JS. Dibuat dengan ♥</div>
+
+  <script>
+    // ====== Helper: Neumorphism Runner (console-capture per kartu) ======
+    function runSnippet(cardId){
+      const card = document.getElementById(cardId);
+      const textarea = card.querySelector('textarea.code');
+      const out = card.querySelector('.out');
+      const code = textarea.value;
+      out.textContent = '';
+      const originalLog = console.log;
+      console.log = (...args)=>{
+        const line = args.map(a => (typeof a==='object'? JSON.stringify(a) : String(a))).join(' ');
+        out.textContent += line + "\n";
+      };
+      try{ new Function(code)(); }
+      catch(err){ out.textContent += 'Error: ' + err.message + "\n"; }
+      finally{ console.log = originalLog; }
+      if(!out.textContent.trim()) out.textContent = 'Tidak ada output';
+    }
+    function resetSnippet(cardId){
+      const card = document.getElementById(cardId);
+      const textarea = card.querySelector('textarea.code');
+      textarea.value = textarea.dataset.default;
+      const out = card.querySelector('.out');
+      out.textContent = '';
+    }
+    function copyCode(el){
+      const code = el.closest('.card').querySelector('textarea.code').value;
+      navigator.clipboard.writeText(code);
+      el.textContent = '✓ Tersalin'; setTimeout(()=> el.textContent='Copy', 1200);
+    }
+
+    // ====== Materi Data ======
+    const materi = [
+      {
+        id:'m1', badge:'Dasar', title:'Hello World (3 cara)', desc:'Menampilkan teks menggunakan alert, console.log, dan document.write.',
+        code:`// 1) alert\nalert('Hello World!');\n\n// 2) console.log\nconsole.log('Hello World!');\n\n// 3) document.write\ndocument.write('Hello World!');`},
+      {
+        id:'m2', badge:'Komentar', title:'Komentar + Biodata', desc:'Gunakan // atau /* ... */ untuk memberi catatan pada kode.',
+        code:`// Biodata sederhana\n// Nama: Budi\n// Umur: 15\n/* Hobi: Sepak bola */\nconsole.log('Nama: Budi, Umur: 15');`},
+      {
+        id:'m3', badge:'Variabel', title:'Variabel: nama & umur', desc:'Simpan nilai pada let/const.',
+        code:`let nama = 'Budi';\nlet umur = 15;\nconsole.log('Halo', nama, 'umur', umur);`},
+      {
+        id:'m4', badge:'Operator', title:'Perhitungan Diskon', desc:'Hitung total bayar = harga - (harga * diskon).',
+        code:`let harga = 100000; // Rp\nlet diskon = 0.2;   // 20%\nlet total = harga - (harga * diskon);\nconsole.log('Total bayar:', total);`},
+      {
+        id:'m5', badge:'String', title:'Ubah Nama Jadi Huruf Besar', desc:'Manfaatkan .toUpperCase() .',
+        code:`let nama = 'budi';\nconsole.log(nama.toUpperCase());`},
+      {
+        id:'m6', badge:'Random', title:'Simulasi Lempar Dadu', desc:'Nilai acak 1–6 dengan Math.random().',
+        code:`let dadu = Math.floor(Math.random()*6)+1;\nconsole.log('Angka dadu:', dadu);`},
+      {
+        id:'m7', badge:'Logika', title:'Cek Kategori Umur', desc:'Gunakan if/else untuk klasifikasi.',
+        code:`let umur = 17;\nif(umur >= 18){\n  console.log('Dewasa');\n}else{\n  console.log('Anak/Remaja');\n}`},
+      {
+        id:'m8', badge:'Switch', title:'Program Menu Pilihan', desc:'Pilih menu dengan switch-case.',
+        code:`let menu = 2;\nswitch(menu){\n  case 1: console.log('Nasi Goreng'); break;\n  case 2: console.log('Mie Ayam'); break;\n  default: console.log('Menu tidak ada');\n}`},
+      {
+        id:'m9', badge:'Loop', title:'Cetak Angka 1–10', desc:'Perulangan for sederhana.',
+        code:`for(let i=1;i<=10;i++){\n  console.log(i);\n}`},
+      {
+        id:'m10', badge:'Loop', title:'Countdown 10–1', desc:'Hitung mundur.',
+        code:`for(let i=10;i>=1;i--){\n  console.log(i);\n}`},
+      {
+        id:'m11', badge:'Loop', title:'Cetak Angka (kecuali 5)', desc:'Gunakan continue untuk skip.',
+        code:`for(let i=1;i<=10;i++){\n  if(i===5) continue;\n  console.log(i);\n}`},
+      {
+        id:'m12', badge:'Array', title:'Daftar Belanja', desc:'Kelola list sederhana dengan array.',
+        code:`let belanja = ['Beras','Gula','Telur'];\nbelanja.push('Minyak');\nconsole.log(belanja);`}
+    ];
+
+    // ====== Render Cards ======
+    const grid = document.getElementById('cards');
+    grid.innerHTML = materi.map(m => `
+      <article class="card" id="${m.id}">
+        <span class="badge">${m.badge}</span>
+        <div class="title">${m.title}</div>
+        <p class="desc">${m.desc}</p>
+        <textarea class="code" data-default="${m.code.replaceAll('"','&quot;')}">${m.code}</textarea>
+        <div class="toolbar">
+          <button class="btn primary" onclick="runSnippet('${m.id}')">Run</button>
+          <button class="btn" onclick="resetSnippet('${m.id}')">Reset</button>
+          <button class="btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <div class="out" aria-live="polite"></div>
+        <div class="mini">HTML/CSS tidak diperlukan untuk logika ini, namun UI card ini mencontohkan pemisahan <b>HTML (struktur)</b>, <b>CSS (gaya)</b>, dan <b>JS (perilaku)</b>.</div>
+      </article>
+    `).join('');
+
+    // Set dataset default (untuk browser lama)
+    document.querySelectorAll('textarea.code').forEach(t => { if(!t.dataset.default) t.dataset.default = t.value; });
+  </script>
+</body>
+</html>

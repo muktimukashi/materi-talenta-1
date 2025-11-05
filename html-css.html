@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTML & CSS Level 7 — Playground Interaktif (Aman)</title>
+  <style>
+    :root {
+      --bg:#e9eef5; --card:#edf2fa; --text:#1f2937; --muted:#5b6b7a;
+      --accent:#3b82f6; --accent2:#06b6d4;
+      --shadowL:rgba(255,255,255,0.9); --shadowD:rgba(0,0,0,0.15);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 20% -10%, #f7fbff, var(--bg)) fixed;
+    }
+    header{text-align:center;padding:40px 20px 10px}
+    h1{margin:0;font-size:clamp(22px,3.8vw,36px)}
+    header p{max-width:860px;margin:10px auto 0;color:var(--muted)}
+    .grid{display:flex;flex-direction:column;gap:32px;max-width:900px;margin:0 auto 80px;padding:20px;}
+    .card{background:var(--card);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;
+      box-shadow:12px 12px 28px var(--shadowD), -12px -12px 28px var(--shadowL);transition:all .25s ease;}
+    .card:hover{transform:translateY(-4px)}
+    .badge{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:12px;color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      padding:6px 10px;border-radius:999px;
+      box-shadow:6px 6px 16px var(--shadowD), -3px -3px 10px var(--shadowL)}
+    h2{margin:12px 0 6px;font-size:20px}
+    .muted{color:var(--muted)}
+    .code{width:100%;min-height:180px;background:#0b1020;color:#d1e8ff;border:0;border-radius:16px;padding:12px;
+      font:13px ui-monospace,monospace;box-shadow:inset 10px 10px 24px rgba(0,0,0,0.35),
+      inset -6px -6px 18px rgba(255,255,255,0.05);resize:vertical;}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+    .btn{border:0;cursor:pointer;padding:10px 16px;border-radius:12px;font-weight:700;color:var(--text);
+      background:var(--card);box-shadow:6px 6px 14px var(--shadowD), -6px -6px 14px var(--shadowL);transition:all .2s ease;}
+    .btn.primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .btn:hover{transform:scale(1.05)}
+    .preview{margin-top:12px;background:#fff;border-radius:16px;overflow:hidden;height:260px;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05)}
+    .preview iframe{width:100%;height:260px;border:0;background:#fff}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HTML & CSS Level 7 — Playground Interaktif</h1>
+    <p>9 materi dasar + mini project d</p>
+  </header>
+
+  <main class="grid">
+
+    <!-- MATERI 1–9 -->
+    <article class="card" id="m1" data-title="Pengenalan HTML & Editor" data-desc="Struktur HTML dasar: doctype, head, body, dan heading." 
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html lang='id'&gt;
+&lt;head&gt;
+  &lt;meta charset='UTF-8'&gt;
+  &lt;title&gt;Halaman Pertama&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Halo Dunia!&lt;/h1&gt;
+  &lt;p&gt;Ini halaman pertamaku.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;">
+    </article>
+
+
+
+    <article class="card" id="m3" data-title="Gambar & Tautan" data-desc="Menampilkan gambar dan tautan ke situs lain."
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body&gt;
+  &lt;h2&gt;Gambar &amp; Tautan&lt;/h2&gt;
+  &lt;img src='https://picsum.photos/300/180' alt='Contoh'&gt;
+  &lt;p&gt;&lt;a href='https://www.wikipedia.org' target='_blank'&gt;Kunjungi Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;">
+    </article>
+
+    <article class="card" id="m4" data-title="List HTML" data-desc="Daftar tidak berurutan dan berurutan."
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body&gt;
+  &lt;ul&gt;&lt;li&gt;Apel&lt;/li&gt;&lt;li&gt;Jeruk&lt;/li&gt;&lt;li&gt;Mangga&lt;/li&gt;&lt;/ul&gt;
+  &lt;ol&gt;&lt;li&gt;Langkah 1&lt;/li&gt;&lt;li&gt;Langkah 2&lt;/li&gt;&lt;/ol&gt;
+&lt;/body&gt;&lt;/html&gt;">
+    </article>
+
+    <article class="card" id="m5" data-title="Tabel" data-desc="Membuat tabel sederhana dengan border."
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;&lt;style&gt;table{border-collapse:collapse}td,th{border:1px solid #999;padding:6px}&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;Nama&lt;/th&gt;&lt;th&gt;Umur&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Budi&lt;/td&gt;&lt;td&gt;13&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;">
+    </article>
+
+    <article class="card" id="m6" data-title="Struktur Layout" data-desc="Gunakan"
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;&lt;style&gt;header,footer{background:#f3f4f6;padding:10px} .wrap{max-width:600px;margin:auto}&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;Bagian Atas&lt;/header&gt;
+  &lt;div class='wrap'&gt;Konten Utama&lt;/div&gt;
+  &lt;footer&gt;Hak Cipta 2025&lt;/footer&gt;
+&lt;/body&gt;&lt;/html&gt;">
+    </article>
+
+    <article class="card" id="m7" data-title="Dasar CSS Internal" data-desc="Mengubah warna dan font menggunakan &lt;style&gt;."
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;&lt;style&gt;body{background:#eef6ff;font-family:Arial}h1{color:#1d4ed8}&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;&lt;h1&gt;Judul Biru&lt;/h1&gt;&lt;p&gt;Paragraf berwarna lembut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;">
+    </article>
+
+    <article class="card" id="m8" data-title="CSS Box Model" data-desc="Contoh margin, padding, dan border."
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;&lt;style&gt;.box{margin:20px;padding:10px;border:2px dashed #2563eb;background:#eff6ff}&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;&lt;div class='box'&gt;Kotak dengan box model&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;">
+    </article>
+
+    <article class="card" id="m9" data-title="Class & ID" data-desc="Gunakan class untuk banyak elemen, ID untuk unik."
+      data-code="&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;&lt;style&gt;.judul{color:red}#unik{background:yellow;padding:5px}&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;&lt;h1 class='judul'&gt;Belajar CSS&lt;/h1&gt;&lt;p id='unik'&gt;Paragraf spesial&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;">
+    </article>
+  </main>
+
+  <script>
+    // 🧠 Generate all materials dynamically
+    document.querySelectorAll('.card').forEach(card=>{
+      const id=card.id;
+      const title=card.dataset.title;
+      const desc=card.dataset.desc;
+      const codeRaw=card.dataset.code.replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&');
+
+      card.innerHTML=`
+        <span class='badge'>${card.querySelector('.badge')?card.querySelector('.badge').textContent:'Materi'}</span>
+        <h2>${title}</h2>
+        <p class='muted'>${desc}</p>
+        <textarea class='code' data-default=\"${codeRaw.replaceAll('"','&quot;')}\">${codeRaw}</textarea>
+        <div class='toolbar'>
+          <button class='btn primary' onclick=\"run('${id}')\">Run</button>
+          <button class='btn' onclick=\"resetCode('${id}')\">Reset</button>
+          <button class='btn' onclick=\"copyCode('${id}',this)\">Copy</button>
+        </div>
+        <div class='preview'><iframe sandbox='allow-same-origin allow-scripts allow-popups allow-forms'></iframe></div>`;
+    });
+
+    // 🔧 Functions
+    function getCard(id){return document.getElementById(id);}
+    function run(id){const c=getCard(id);const code=c.querySelector('.code').value;c.querySelector('iframe').srcdoc=code;}
+    function resetCode(id){const c=getCard(id);const a=c.querySelector('.code');a.value=a.dataset.default;c.querySelector('iframe').srcdoc='';}
+    function copyCode(id,btn){navigator.clipboard.writeText(getCard(id).querySelector('.code').value);btn.textContent='✓ Disalin';setTimeout(()=>btn.textContent='Copy',1200);}
+  </script>
+</body>
+</html>
