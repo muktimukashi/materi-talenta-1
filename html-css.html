@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HTML & CSS Level 7 — Playground Interaktif (Aman)</title>
+  <title>HTML & CSS Level 7 — Playground Interaktif</title>
   <style>
     :root {
       --bg:#e9eef5; --card:#edf2fa; --text:#1f2937; --muted:#5b6b7a;
@@ -47,13 +47,13 @@
 <body>
   <header>
     <h1>HTML & CSS Level 7 — Playground Interaktif</h1>
-    <p>9 materi dasar + mini project d</p>
+    <p>9 materi dasar + mini project dasar</p>
   </header>
 
   <main class="grid">
 
     <!-- MATERI 1–9 -->
-    <article class="card" id="m1" data-title="Pengenalan HTML & Editor" data-desc="Struktur HTML dasar: doctype, head, body, dan heading." 
+    <article class="card" id="m1" data-badge="HTML" data-title="Pengenalan HTML & Editor" data-desc="Struktur HTML dasar: doctype, head, body, dan heading." 
       data-code="&lt;!DOCTYPE html&gt;
 &lt;html lang='id'&gt;
 &lt;head&gt;
@@ -67,9 +67,7 @@
 &lt;/html&gt;">
     </article>
 
-
-
-    <article class="card" id="m3" data-title="Gambar & Tautan" data-desc="Menampilkan gambar dan tautan ke situs lain."
+    <article class="card" id="m3" data-badge="HTML" data-title="Gambar & Tautan" data-desc="Menampilkan gambar dan tautan ke situs lain."
       data-code="&lt;!DOCTYPE html&gt;
 &lt;html&gt;&lt;body&gt;
   &lt;h2&gt;Gambar &amp; Tautan&lt;/h2&gt;
@@ -78,7 +76,7 @@
 &lt;/body&gt;&lt;/html&gt;">
     </article>
 
-    <article class="card" id="m4" data-title="List HTML" data-desc="Daftar tidak berurutan dan berurutan."
+    <article class="card" id="m4" data-badge="HTML" data-title="List HTML" data-desc="Daftar tidak berurutan dan berurutan."
       data-code="&lt;!DOCTYPE html&gt;
 &lt;html&gt;&lt;body&gt;
   &lt;ul&gt;&lt;li&gt;Apel&lt;/li&gt;&lt;li&gt;Jeruk&lt;/li&gt;&lt;li&gt;Mangga&lt;/li&gt;&lt;/ul&gt;
@@ -86,7 +84,7 @@
 &lt;/body&gt;&lt;/html&gt;">
     </article>
 
-    <article class="card" id="m5" data-title="Tabel" data-desc="Membuat tabel sederhana dengan border."
+    <article class="card" id="m5" data-badge="HTML" data-title="Tabel" data-desc="Membuat tabel sederhana dengan border."
       data-code="&lt;!DOCTYPE html&gt;
 &lt;html&gt;&lt;head&gt;&lt;style&gt;table{border-collapse:collapse}td,th{border:1px solid #999;padding:6px}&lt;/style&gt;&lt;/head&gt;
 &lt;body&gt;
@@ -97,7 +95,7 @@
 &lt;/body&gt;&lt;/html&gt;">
     </article>
 
-    <article class="card" id="m6" data-title="Struktur Layout" data-desc="Gunakan"
+    <article class="card" id="m6" data-badge="HTML" data-title="Struktur Layout" data-desc="Struktur sederhana dengan header, konten, dan footer."
       data-code="&lt;!DOCTYPE html&gt;
 &lt;html&gt;&lt;head&gt;&lt;style&gt;header,footer{background:#f3f4f6;padding:10px} .wrap{max-width:600px;margin:auto}&lt;/style&gt;&lt;/head&gt;
 &lt;body&gt;
@@ -107,51 +105,80 @@
 &lt;/body&gt;&lt;/html&gt;">
     </article>
 
-    <article class="card" id="m7" data-title="Dasar CSS Internal" data-desc="Mengubah warna dan font menggunakan &lt;style&gt;."
+   <article class="card" id="m8" data-badge="CSS" data-title="CSS Box Model" data-desc="Contoh margin, padding, dan border."
       data-code="&lt;!DOCTYPE html&gt;
-&lt;html&gt;&lt;head&gt;&lt;style&gt;body{background:#eef6ff;font-family:Arial}h1{color:#1d4ed8}&lt;/style&gt;&lt;/head&gt;
-&lt;body&gt;&lt;h1&gt;Judul Biru&lt;/h1&gt;&lt;p&gt;Paragraf berwarna lembut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;">
+&lt;html&gt;&lt;head&gt;&lt;style&gt;
+.box{margin:20px;padding:10px;border:2px dashed #2563eb;background:#eff6ff}
+&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;div class='box'&gt;Kotak dengan box model&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;">
     </article>
 
-    <article class="card" id="m8" data-title="CSS Box Model" data-desc="Contoh margin, padding, dan border."
+    <article class="card" id="m9" data-badge="CSS" data-title="Class & ID" data-desc="Gunakan class untuk banyak elemen, ID untuk unik."
       data-code="&lt;!DOCTYPE html&gt;
-&lt;html&gt;&lt;head&gt;&lt;style&gt;.box{margin:20px;padding:10px;border:2px dashed #2563eb;background:#eff6ff}&lt;/style&gt;&lt;/head&gt;
-&lt;body&gt;&lt;div class='box'&gt;Kotak dengan box model&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;">
-    </article>
-
-    <article class="card" id="m9" data-title="Class & ID" data-desc="Gunakan class untuk banyak elemen, ID untuk unik."
-      data-code="&lt;!DOCTYPE html&gt;
-&lt;html&gt;&lt;head&gt;&lt;style&gt;.judul{color:red}#unik{background:yellow;padding:5px}&lt;/style&gt;&lt;/head&gt;
-&lt;body&gt;&lt;h1 class='judul'&gt;Belajar CSS&lt;/h1&gt;&lt;p id='unik'&gt;Paragraf spesial&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;">
+&lt;html&gt;&lt;head&gt;&lt;style&gt;
+.judul{color:red}
+#unik{background:yellow;padding:5px}
+&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 class='judul'&gt;Belajar CSS&lt;/h1&gt;
+&lt;p id='unik'&gt;Paragraf spesial&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;">
     </article>
   </main>
 
   <script>
     // 🧠 Generate all materials dynamically
     document.querySelectorAll('.card').forEach(card=>{
-      const id=card.id;
-      const title=card.dataset.title;
-      const desc=card.dataset.desc;
-      const codeRaw=card.dataset.code.replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&');
+      const id = card.id;
+      const title = card.dataset.title;
+      const desc = card.dataset.desc;
+      const badge = card.dataset.badge || 'Materi';
+      const codeRaw = card.dataset.code
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&');
 
-      card.innerHTML=`
-        <span class='badge'>${card.querySelector('.badge')?card.querySelector('.badge').textContent:'Materi'}</span>
+      card.innerHTML = `
+        <span class='badge'>${badge}</span>
         <h2>${title}</h2>
         <p class='muted'>${desc}</p>
-        <textarea class='code' data-default=\"${codeRaw.replaceAll('"','&quot;')}\">${codeRaw}</textarea>
+        <textarea class='code' aria-label='Editor kode HTML' data-default="${codeRaw.replace(/"/g,'&quot;')}">${codeRaw}</textarea>
         <div class='toolbar'>
-          <button class='btn primary' onclick=\"run('${id}')\">Run</button>
-          <button class='btn' onclick=\"resetCode('${id}')\">Reset</button>
-          <button class='btn' onclick=\"copyCode('${id}',this)\">Copy</button>
+          <button class='btn primary' onclick="run('${id}')">Run</button>
+          <button class='btn' onclick="resetCode('${id}')">Reset</button>
+          <button class='btn' onclick="copyCode('${id}',this)">Copy</button>
         </div>
         <div class='preview'><iframe sandbox='allow-same-origin allow-scripts allow-popups allow-forms'></iframe></div>`;
     });
 
     // 🔧 Functions
-    function getCard(id){return document.getElementById(id);}
-    function run(id){const c=getCard(id);const code=c.querySelector('.code').value;c.querySelector('iframe').srcdoc=code;}
-    function resetCode(id){const c=getCard(id);const a=c.querySelector('.code');a.value=a.dataset.default;c.querySelector('iframe').srcdoc='';}
-    function copyCode(id,btn){navigator.clipboard.writeText(getCard(id).querySelector('.code').value);btn.textContent='✓ Disalin';setTimeout(()=>btn.textContent='Copy',1200);}
+  // 🔧 Functions
+function getCard(id){return document.getElementById(id);}
+
+function run(id){
+  const c = getCard(id);
+  const code = c.querySelector('.code').value;
+  const iframe = c.querySelector('iframe');
+  iframe.removeAttribute('sandbox'); // supaya tampil di semua browser
+  iframe.srcdoc = code;
+}
+
+function resetCode(id){
+  const c = getCard(id);
+  const a = c.querySelector('.code');
+  a.value = a.dataset.default;
+  const iframe = c.querySelector('iframe');
+  iframe.src = 'about:blank';
+}
+
+function copyCode(id,btn){
+  navigator.clipboard.writeText(getCard(id).querySelector('.code').value);
+  btn.textContent='✓ Disalin';
+  setTimeout(()=>btn.textContent='Copy',1200);
+}
+
   </script>
 </body>
 </html>
